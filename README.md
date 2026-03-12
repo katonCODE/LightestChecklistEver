@@ -1,2 +1,18 @@
 # LightestChecklistEver
-Creating the lightest, least resource intensive checklist tool possible. Aimed to be usable on both Windows and Mac. 
+
+Creating the lightest, least resource-intensive checklist tool possible. Aimed to be usable on both Windows and Mac. 
+
+Built primarily on **Electron** to leverage native OS window management to keep the window "always on top", while using a frameless, transparent glassmorphism UI.
+
+## Features
+
+- **Always on Top:** The checklist stays above other windows for easy access.
+- **Frameless Glassmorphism UI:** Sleek, lightweight, and modern aesthetic.
+- **Custom Window Resizing:** Omni-directional resizing algorithms for the frameless transparent window.
+- **Global Hotkey Toggle:** Bind a custom keyboard shortcut to instantly show or hide the checklist from anywhere.
+- **Task Sorting:** Manually reorder tasks with an optimized drag-and-drop system.
+- **Task Completion Behaviour:** Configurable options to automatically move completed tasks to the bottom and display a divider.
+- **Customizable Settings:** Personalize the accent color, background color, storage path, and more. Data is saved in a simple local JSON file.
+
+## Documentation
+For architecture details, refer to the Obsidian vault located in `LightChecklistObsidian/Documentation/`.

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Light Checklist</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-container">
+    <div class="header drag-handle">
+      <span class="title">Checklist</span>
+      <div class="controls no-drag">
+        <button id="settingsBtn" class="icon-btn" title="Settings">⚙️</button>
+        <input type="range" id="opacitySlider" min="0.1" max="1" step="0.05" value="1" title="Adjust Transparency">
+        <button id="minimizeBtn" class="close-btn" title="Minimize">&#8722;</button>
+        <button id="closeBtn" class="close-btn" title="Close App">&times;</button>
+      </div>
+    </div>
+    
+    <div id="checklistView">
+      <div class="input-container no-drag">
+        <input type="text" id="newTaskInput" placeholder="Add a new task..." autocomplete="off">
+        <button id="addTaskBtn">+</button>
+      </div>
+      <ul id="taskList" class="task-list no-drag"></ul>
+    </div>
+
+    <div id="settingsView" class="settings-container no-drag" style="display: none;">
+      <div class="settings-group">
+        <label>Accent Color</label>
+        <input type="color" id="accentColorInput">
+      </div>
+      <div class="settings-group">
+        <label>Background Color</label>
+        <input type="color" id="bgColorInput">
+      </div>
+      <div class="settings-group">
+        <label>Task Completion</label>
+        <div class="toggle-row">
+          <span>Move ticked tasks to bottom</span>
+          <label class="toggle-switch">
+            <input type="checkbox" id="tickToBottomToggle">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+        <div class="toggle-row">
+          <span>Show divider for ticked tasks</span>
+          <label class="toggle-switch">
+            <input type="checkbox" id="tickDividerToggle">
+            <span class="toggle-slider"></span>
+          </label>
+        </div>
+      </div>
+      <div class="settings-group">
+        <label>Toggle Visibility Hotkey</label>
+        <div class="hotkey-row">
+          <button id="hotkeyBtn" class="hotkey-btn">Click to bind</button>
+          <button id="hotkeyClearBtn" class="hotkey-clear-btn" title="Clear hotkey">✕</button>
+        </div>
+        <span class="hotkey-hint">Requires a modifier key (Ctrl / Cmd / Alt / Shift)</span>
+      </div>
+      <div class="settings-group">
+        <label>Storage Path (.json)</label>
+        <div class="path-input-group">
+          <input type="text" id="storagePathInput" readonly>
+          <button id="changePathBtn">Change</button>
+        </div>
+      </div>
+      <div class="settings-actions">
+        <button id="backBtn">Back to Checklist</button>
+      </div>
+    </div>
+    
+    <!-- Omni-directional invisible resize edges -->
+    <div class="resize-edge top no-drag" data-edge="top"></div>
+    <div class="resize-edge right no-drag" data-edge="right"></div>
+    <div class="resize-edge bottom no-drag" data-edge="bottom"></div>
+    <div class="resize-edge left no-drag" data-edge="left"></div>
+    <div class="resize-edge top-left no-drag" data-edge="top-left"></div>
+    <div class="resize-edge top-right no-drag" data-edge="top-right"></div>
+    <div class="resize-edge bottom-left no-drag" data-edge="bottom-left"></div>
+    <div class="resize-edge bottom-right no-drag" data-edge="bottom-right"></div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>

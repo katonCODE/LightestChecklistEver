@@ -1,0 +1,40 @@
+{
+  "name": "lightest-checklist-ever",
+  "version": "1.0.0",
+  "description": "A very light checklist app that stays on top",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist:win": "electron-builder --win",
+    "dist:mac": "electron-builder --mac"
+  },
+  "author": "",
+  "license": "ISC",
+  "build": {
+    "appId": "com.lightest.checklistever",
+    "productName": "LightestChecklistEver",
+    "files": [
+      "main.js",
+      "preload.js",
+      "src/**"
+    ],
+    "mac": {
+      "target": "dmg",
+      "icon": "build/icon.icns",
+      "category": "public.app-category.productivity"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "oneClick": true,
+      "installerIcon": "build/icon.ico",
+      "shortcutName": "LightestChecklistEver"
+    }
+  },
+  "devDependencies": {
+    "electron": "^41.0.0",
+    "electron-builder": "^25.1.8"
+  }
+}
