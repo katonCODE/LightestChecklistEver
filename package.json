@@ -1,6 +1,6 @@
 {
   "name": "lightest-checklist-ever",
-  "version": "1.0.0",
+  "version": "1.6.7",
   "description": "A very light checklist app that stays on top",
   "main": "main.js",
   "repository": {
