@@ -12,7 +12,6 @@ Thumbs.db
 
 # Build and dist
 /dist
-/build
 /out
 
 # Logs
