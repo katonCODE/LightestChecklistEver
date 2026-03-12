@@ -3,29 +3,42 @@
   "version": "1.0.0",
   "description": "A very light checklist app that stays on top",
   "main": "main.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/katonCODE/LightestChecklistEver.git"
+  },
   "scripts": {
     "start": "electron .",
     "dist": "electron-builder --publish always",
     "dist:win": "electron-builder --win",
     "dist:mac": "electron-builder --mac"
   },
-  "author": "",
+  "author": "katonCODE",
   "license": "ISC",
   "build": {
     "appId": "com.lightest.checklistever",
     "productName": "LightestChecklistEver",
+    "publish": [
+      {
+        "provider": "github"
+      }
+    ],
     "files": [
       "main.js",
       "preload.js",
       "src/**"
     ],
     "mac": {
-      "target": "dmg",
+      "target": [
+        "dmg"
+      ],
       "icon": "build/icon.icns",
       "category": "public.app-category.productivity"
     },
     "win": {
-      "target": "nsis",
+      "target": [
+        "nsis"
+      ],
       "icon": "build/icon.ico"
     },
     "nsis": {
