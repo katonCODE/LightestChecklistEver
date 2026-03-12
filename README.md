@@ -2,6 +2,8 @@
 
 Creating the lightest, least resource-intensive checklist tool possible. Aimed to be usable on both Windows and Mac. 
 
+This app is supposed to test the efficiency / strength of AntiGravity while solving an issue I have.
+
 Built primarily on **Electron** to leverage native OS window management to keep the window "always on top", while using a frameless, transparent glassmorphism UI.
 
 ## Features

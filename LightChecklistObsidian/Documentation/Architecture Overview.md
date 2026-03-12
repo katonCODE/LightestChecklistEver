@@ -8,3 +8,4 @@ The Lightest Checklist Ever app is built primarily on [[Electron]] to leverage t
 - **Storage**: Tasks are saved to a user-defined `.json` file (`LightChecklist.json` by default). Settings are stored in `settings.json`. [[Settings Architecture]]
 - **Resizing Algorithm**: A math-based dragging implementation for frameless resizing. [[Custom Window Resizing]]
 - **Settings**: Dynamic accent color and storage path configuration via a ⚙️ toggle.
+- **Background Optimization**: Power efficiency and RAM minimization for 24/7 use. [[App Optimization for Long-term Background Run]]

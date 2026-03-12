@@ -1,6 +1,14 @@
-const { app, BrowserWindow, ipcMain, dialog, globalShortcut } = require('electron');
+const { app, BrowserWindow, ipcMain, dialog, globalShortcut, Menu } = require('electron');
 const path = require('path');
 const fs = require('fs');
+
+app.disableHardwareAcceleration();
+app.commandLine.appendSwitch('js-flags', '--expose_gc');
+
+const gotTheLock = app.requestSingleInstanceLock();
+if (!gotTheLock) {
+  app.quit();
+}
 
 let mainWindow;
 
@@ -32,12 +40,17 @@ function createWindow() {
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
-      nodeIntegration: false
+      nodeIntegration: false,
+      backgroundThrottling: true
     }
   });
 
   mainWindow.setAlwaysOnTop(true, 'screen-saver');
   mainWindow.loadFile('src/index.html');
+
+  mainWindow.on('closed', () => {
+    mainWindow = null;
+  });
 }
 
 function registerHotkey(accelerator) {
@@ -47,6 +60,10 @@ function registerHotkey(accelerator) {
     if (!mainWindow) return;
     if (mainWindow.isVisible()) {
       mainWindow.hide();
+      if (global.gc) global.gc();
+      if (mainWindow.webContents) {
+        mainWindow.webContents.executeJavaScript('if (window.gc) window.gc();').catch(() => {});
+      }
     } else {
       mainWindow.show();
       mainWindow.focus();
@@ -54,13 +71,26 @@ function registerHotkey(accelerator) {
   });
 }
 
-app.whenReady().then(() => {
-  createWindow();
-  if (settings.hotkey) registerHotkey(settings.hotkey);
-  app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) createWindow();
+if (gotTheLock) {
+  app.on('second-instance', (event, commandLine, workingDirectory) => {
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore();
+      if (!mainWindow.isVisible()) mainWindow.show();
+      mainWindow.focus();
+    }
   });
-});
+
+  app.whenReady().then(() => {
+    if (app.isPackaged) {
+      Menu.setApplicationMenu(null);
+    }
+    createWindow();
+    if (settings.hotkey) registerHotkey(settings.hotkey);
+    app.on('activate', () => {
+      if (BrowserWindow.getAllWindows().length === 0) createWindow();
+    });
+  });
+}
 
 app.on('will-quit', () => globalShortcut.unregisterAll());
 
