@@ -303,15 +303,18 @@ settingsBtn.addEventListener('click', () => {
   if (settingsView.style.display === 'none') {
     checklistView.style.display = 'none';
     settingsView.style.display = 'flex';
+    if (window.electronAPI.setAlwaysOnTop) window.electronAPI.setAlwaysOnTop('floating');
   } else {
     settingsView.style.display = 'none';
     checklistView.style.display = 'block';
+    if (window.electronAPI.setAlwaysOnTop) window.electronAPI.setAlwaysOnTop('screen-saver');
   }
 });
 
 backBtn.addEventListener('click', async () => {
   settingsView.style.display = 'none';
   checklistView.style.display = 'block';
+  if (window.electronAPI.setAlwaysOnTop) window.electronAPI.setAlwaysOnTop('screen-saver');
   // Reload data in case path changed
   tasks = await window.electronAPI.loadData();
   renderTasks();

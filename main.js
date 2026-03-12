@@ -154,3 +154,13 @@ ipcMain.handle('set-hotkey', (event, accelerator) => {
   registerHotkey(settings.hotkey);
   return settings.hotkey;
 });
+
+ipcMain.handle('set-always-on-top', (event, level) => {
+  if (mainWindow) {
+    if (level === 'normal') {
+      mainWindow.setAlwaysOnTop(false);
+    } else {
+      mainWindow.setAlwaysOnTop(true, level);
+    }
+  }
+});
