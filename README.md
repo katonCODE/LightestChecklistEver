@@ -16,5 +16,11 @@ Built primarily on **Electron** to leverage native OS window management to keep 
 - **Task Completion Behaviour:** Configurable options to automatically move completed tasks to the bottom and display a divider.
 - **Customizable Settings:** Personalize the accent color, background color, storage path, and more. Data is saved in a simple local JSON file.
 
+## ⚠️ Security Notes (Unsigned Build)
+Because this app is independently developed and not "signed" with paid developer certificates, your computer may warn you during installation:
+
+- **Windows:** Click "More info" and then "Run anyway."
+- **macOS:** After installing the app, open the terminal and run this: `xattr -d com.apple.quarantine /Applications/LightestChecklistEver.app`
+
 ## Documentation
 For architecture details, refer to the Obsidian vault located in `LightChecklistObsidian/Documentation/`.
