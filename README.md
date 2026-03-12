@@ -20,7 +20,7 @@ Built primarily on **Electron** to leverage native OS window management to keep 
 Because this app is independently developed and not "signed" with paid developer certificates, your computer may warn you during installation:
 
 - **Windows:** Click "More info" and then "Run anyway."
-- **macOS:** Right-click the app in your Applications folder and select "Open."
+- **macOS:** After installing the app, open the terminal and run this: xattr -d com.apple.quarantine /Applications/LightestChecklistEver.app
 
 ## Documentation
 For architecture details, refer to the Obsidian vault located in `LightChecklistObsidian/Documentation/`.
