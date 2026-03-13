@@ -20,7 +20,8 @@
     "productName": "LightestChecklistEver",
     "publish": [
       {
-        "provider": "github"
+        "provider": "github",
+        "releaseType": "release"
       }
     ],
     "files": [
