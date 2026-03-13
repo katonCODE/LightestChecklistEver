@@ -11,5 +11,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
   saveSettings: (settings) => ipcRenderer.invoke('save-settings', settings),
   selectFile: () => ipcRenderer.invoke('select-file'),
   setHotkey: (accelerator) => ipcRenderer.invoke('set-hotkey', accelerator),
-  setAlwaysOnTop: (level) => ipcRenderer.invoke('set-always-on-top', level)
+  setAlwaysOnTop: (level) => ipcRenderer.invoke('set-always-on-top', level),
+  setFullscreenWidget: (enable) => ipcRenderer.invoke('set-fullscreen-widget', enable)
 });

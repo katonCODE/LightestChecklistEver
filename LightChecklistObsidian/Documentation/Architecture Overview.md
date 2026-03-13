@@ -9,3 +9,4 @@ The Lightest Checklist Ever app is built primarily on [[Electron]] to leverage t
 - **Resizing Algorithm**: A math-based dragging implementation for frameless resizing. [[Custom Window Resizing]]
 - **Settings**: Dynamic accent color and storage path configuration via a ⚙️ toggle. [[MacOS Window Level Management]]
 - **Background Optimization**: Power efficiency and RAM minimization for 24/7 use. [[App Optimization for Long-term Background Run]]
+- **Drag and Drop**: Custom pointer events handling with strict X-axis locking and macOS native drag prevention. [[Drag and Drop Implementation]]

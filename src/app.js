@@ -16,6 +16,7 @@ const tickToBottomToggle = document.getElementById('tickToBottomToggle');
 const tickDividerToggle = document.getElementById('tickDividerToggle');
 const hotkeyBtn = document.getElementById('hotkeyBtn');
 const hotkeyClearBtn = document.getElementById('hotkeyClearBtn');
+const fullscreenWidgetToggle = document.getElementById('fullscreenWidgetToggle');
 
 let tasks = [];
 let settings = {};
@@ -53,6 +54,9 @@ function applySettings() {
   storagePathInput.value = settings.dataPath;
   tickToBottomToggle.checked = !!settings.tickToBottom;
   tickDividerToggle.checked = !!settings.tickDivider;
+  if (fullscreenWidgetToggle) {
+    fullscreenWidgetToggle.checked = !!settings.fullscreenWidget;
+  }
   updateHotkeyDisplay();
 }
 
@@ -137,7 +141,7 @@ function createGhost(li, startX, startY) {
   ghost.className = 'task-item drag-ghost';
   ghost.style.width = rect.width + 'px';
   ghost.style.transform = `translate3d(${rect.left}px, ${rect.top}px, 0)`;
-  ghost.dataset.originX = rect.left - startX;
+  ghost.dataset.originX = rect.left;
   ghost.dataset.originY = rect.top - startY;
   document.body.appendChild(ghost);
 }
@@ -146,7 +150,7 @@ function moveGhost(clientX, clientY) {
   if (!ghost) return;
   const ox = parseFloat(ghost.dataset.originX);
   const oy = parseFloat(ghost.dataset.originY);
-  ghost.style.transform = `translate3d(${clientX + ox}px, ${clientY + oy}px, 0)`;
+  ghost.style.transform = `translate3d(${ox}px, ${clientY + oy}px, 0)`;
 }
 
 function destroyGhost() {
@@ -163,6 +167,10 @@ function onDragPointerDown(e, li, index) {
 
   const onMove = (ev) => {
     if (!dragState) return;
+    if (ev.buttons === 0) {
+      onUp(ev);
+      return;
+    }
     if (!dragState.active) {
       if (Math.abs(ev.clientY - dragState.startY) < 5) return;
       dragState.active = true;
@@ -181,10 +189,11 @@ function onDragPointerDown(e, li, index) {
     });
   };
 
-  const onUp = () => {
+  const onUp = (ev) => {
     li.removeEventListener('pointermove', onMove);
     li.removeEventListener('pointerup', onUp);
     li.removeEventListener('pointercancel', onUp);
+    try { li.releasePointerCapture(ev.pointerId); } catch(e) {}
     if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
     if (!dragState) return;
 
@@ -212,7 +221,12 @@ function onDragPointerDown(e, li, index) {
   li.addEventListener('pointercancel', onUp);
 }
 
+let lastUpdateY = 0;
+
 function updateDropTarget(clientY) {
+  if (Math.abs(clientY - lastUpdateY) < 5) return;
+  lastUpdateY = clientY;
+
   const items = taskList.querySelectorAll('.task-item:not(.dragging)');
   let targetIndex = tasks.length;
   let refNode = null;
@@ -358,6 +372,16 @@ tickDividerToggle.addEventListener('change', async () => {
   await window.electronAPI.saveSettings({ tickDivider: settings.tickDivider });
   renderTasks(true);
 });
+
+if (fullscreenWidgetToggle) {
+  fullscreenWidgetToggle.addEventListener('change', async () => {
+    settings.fullscreenWidget = fullscreenWidgetToggle.checked;
+    await window.electronAPI.saveSettings({ fullscreenWidget: settings.fullscreenWidget });
+    if (window.electronAPI.setFullscreenWidget) {
+      window.electronAPI.setFullscreenWidget(settings.fullscreenWidget);
+    }
+  });
+}
 
 const resizeEdges = document.querySelectorAll('.resize-edge');
 let isResizing = false;

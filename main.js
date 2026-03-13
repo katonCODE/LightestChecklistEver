@@ -21,7 +21,7 @@ function getSettings() {
       return JSON.parse(fs.readFileSync(settingsPath, 'utf-8'));
     }
   } catch (e) { console.error(e); }
-  return { dataPath: path.join(app.getPath('documents'), 'LightChecklist.json'), accentColor: '#bb86fc', backgroundColor: '#1e1e24', tickToBottom: false, tickDivider: false, hotkey: null };
+  return { dataPath: path.join(app.getPath('documents'), 'LightChecklist.json'), accentColor: '#bb86fc', backgroundColor: '#1e1e24', tickToBottom: false, tickDivider: false, hotkey: null, fullscreenWidget: false };
 }
 
 let settings = getSettings();
@@ -46,6 +46,9 @@ function createWindow() {
   });
 
   mainWindow.setAlwaysOnTop(true, 'screen-saver');
+  if (settings.fullscreenWidget) {
+    mainWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
+  }
   mainWindow.loadFile('src/index.html');
 
   mainWindow.on('closed', () => {
@@ -162,5 +165,11 @@ ipcMain.handle('set-always-on-top', (event, level) => {
     } else {
       mainWindow.setAlwaysOnTop(true, level);
     }
+  }
+});
+
+ipcMain.handle('set-fullscreen-widget', (event, enable) => {
+  if (mainWindow) {
+    mainWindow.setVisibleOnAllWorkspaces(enable, { visibleOnFullScreen: enable });
   }
 });
