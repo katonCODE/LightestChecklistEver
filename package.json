@@ -11,7 +11,9 @@
     "start": "electron .",
     "dist": "electron-builder --publish always",
     "dist:win": "electron-builder --win",
-    "dist:mac": "electron-builder --mac"
+    "dist:mac": "electron-builder --mac",
+    "test": "vitest",
+    "test:ui": "vitest --ui"
   },
   "author": "katonCODE",
   "license": "ISC",
@@ -26,6 +28,7 @@
     ],
     "files": [
       "main.js",
+      "store.js",
       "preload.js",
       "src/**"
     ],
@@ -49,7 +52,9 @@
     }
   },
   "devDependencies": {
+    "@vitest/ui": "^4.1.0",
     "electron": "^41.0.0",
-    "electron-builder": "^25.1.8"
+    "electron-builder": "^25.1.8",
+    "vitest": "^4.1.0"
   }
 }

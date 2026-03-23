@@ -31,13 +31,7 @@ async function init() {
   renderTasks();
 }
 
-function getContrastColor(hex) {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-  return luminance > 0.5 ? '#1a1a1a' : '#ffffff';
-}
+
 
 function applySettings() {
   document.documentElement.style.setProperty('--accent-color', settings.accentColor);
@@ -287,19 +281,15 @@ function toggleTask(index) {
 }
 
 function deleteTask(index) {
-  const items = taskList.querySelectorAll('.task-item');
-  const li = items[index];
+  const li = taskList.querySelector(`.task-item[data-index="${index}"]`);
   if (!li) return;
   li.style.transition = 'transform 0.2s ease, opacity 0.2s ease';
   li.style.transform = 'scale(0.9)';
   li.style.opacity = '0';
   setTimeout(() => {
-    li.remove();
     tasks.splice(index, 1);
     saveTasks();
-    taskList.querySelectorAll('.task-item').forEach((el, i) => {
-      el.dataset.index = i;
-    });
+    renderTasks(true);
   }, 200);
 }
 
@@ -430,17 +420,7 @@ function updateHotkeyDisplay() {
   hotkeyBtn.classList.toggle('has-hotkey', !!settings.hotkey);
 }
 
-function acceleratorFromEvent(e) {
-  const parts = [];
-  if (e.ctrlKey || e.metaKey) parts.push('CommandOrControl');
-  if (e.altKey) parts.push('Alt');
-  if (e.shiftKey) parts.push('Shift');
-  const key = e.key;
-  if (['Control', 'Meta', 'Alt', 'Shift'].includes(key)) return null;
-  const keyMap = { ' ': 'Space', 'ArrowUp': 'Up', 'ArrowDown': 'Down', 'ArrowLeft': 'Left', 'ArrowRight': 'Right' };
-  parts.push(keyMap[key] || (key.length === 1 ? key.toUpperCase() : key));
-  return parts.length > 1 ? parts.join('+') : null;
-}
+
 
 hotkeyBtn.addEventListener('click', () => {
   hotkeyBtn.textContent = 'Press keys...';

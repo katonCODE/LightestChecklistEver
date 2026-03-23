@@ -30,8 +30,6 @@ body {
   display: flex;
   flex-direction: column;
   background-color: var(--bg-color);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   border-radius: 12px; /* Smooth corners */
   border: 1px solid var(--border-color);
   margin: 4px; /* Space for shadow/border in transparent window */

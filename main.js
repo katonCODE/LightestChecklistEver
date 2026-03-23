@@ -1,6 +1,6 @@
 const { app, BrowserWindow, ipcMain, dialog, globalShortcut, Menu } = require('electron');
 const path = require('path');
-const fs = require('fs');
+const { createStore } = require('./store');
 
 app.disableHardwareAcceleration();
 app.commandLine.appendSwitch('js-flags', '--expose_gc');
@@ -14,11 +14,13 @@ let mainWindow;
 
 // Save file in the user's Documents folder so it's easily portable/synced to cloud drives
 const settingsPath = path.join(app.getPath('userData'), 'settings.json');
+const settingsStore = createStore(settingsPath);
 
 function getSettings() {
   try {
-    if (fs.existsSync(settingsPath)) {
-      return JSON.parse(fs.readFileSync(settingsPath, 'utf-8'));
+    const data = settingsStore.load();
+    if (!Array.isArray(data)) {
+      return data;
     }
   } catch (e) { console.error(e); }
   return { dataPath: path.join(app.getPath('documents'), 'LightChecklist.json'), accentColor: '#bb86fc', backgroundColor: '#1e1e24', tickToBottom: false, tickDivider: false, hotkey: null, fullscreenWidget: false };
@@ -110,22 +112,20 @@ ipcMain.handle('get-settings', () => settings);
 
 ipcMain.handle('save-settings', (event, newSettings) => {
   settings = { ...settings, ...newSettings };
-  fs.writeFileSync(settingsPath, JSON.stringify(settings, null, 2));
+  settingsStore.save(settings);
   return settings;
 });
 
 ipcMain.handle('load-data', () => {
   try {
-    if (fs.existsSync(settings.dataPath)) {
-      return JSON.parse(fs.readFileSync(settings.dataPath, 'utf-8'));
-    }
+    return createStore(settings.dataPath).load();
   } catch (error) { console.error('Failed to load data', error); }
   return [];
 });
 
 ipcMain.handle('save-data', (event, data) => {
   try {
-    fs.writeFileSync(settings.dataPath, JSON.stringify(data, null, 2));
+    createStore(settings.dataPath).save(data);
     return true;
   } catch (error) {
     console.error('Failed to save data', error);
@@ -153,7 +153,7 @@ ipcMain.handle('set-bounds', (event, bounds) => {
 
 ipcMain.handle('set-hotkey', (event, accelerator) => {
   settings.hotkey = accelerator || null;
-  fs.writeFileSync(settingsPath, JSON.stringify(settings, null, 2));
+  settingsStore.save(settings);
   registerHotkey(settings.hotkey);
   return settings.hotkey;
 });
